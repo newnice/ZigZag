@@ -66,7 +66,8 @@ public class SpherePresenter
 
     internal void DestroyPlatform(Collider collider)
     {
-
+  
+        collider.gameObject.SetActive(false);
     }
 }
     

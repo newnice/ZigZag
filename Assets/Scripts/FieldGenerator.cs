@@ -10,14 +10,22 @@ public class FieldGenerator: MonoBehaviour
     private float minimumDistanceToGenerate = 2;
     [SerializeField]
     private Transform pathParent;
+    [SerializeField]
+    private int maxFieldPoolSize = 20;
+    [SerializeField]
+    private int maxCrystalPoolSize = 7;
 
     private ObjectPool _fieldPool;
+    private ObjectPool _crystalPool;
     private Vector3 _componentSize;
 
     private void Awake()
     {
         _fieldPool = new ObjectPool();
-        _fieldPool.InitPool(20, fieldPrefab, pathParent);
+        _fieldPool.InitPool(maxFieldPoolSize, fieldPrefab, pathParent);
+
+        _crystalPool = new ObjectPool();
+        _crystalPool.InitPool(maxFieldPoolSize, fieldPrefab, pathParent);
     }
 
     private void Start()

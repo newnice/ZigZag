@@ -48,8 +48,15 @@ public class SphereMovement : MonoBehaviour
     {
         if (collision.collider.CompareTag(Constants.TAG_PLATFORM) && _presenter != null)
         {
+            StartCoroutine("OnPlatformDestroy", collision.collider);
             _presenter.DestroyPlatform(collision.collider);
         }
+    }
+
+    private IEnumerator OnPlatformDestroy(Collider collider)
+    {
+        yield return new WaitForSeconds(2);
+        collider.gameObject.SetActive(false);
     }
     private void OnTriggerEnter(Collider other)
     {
