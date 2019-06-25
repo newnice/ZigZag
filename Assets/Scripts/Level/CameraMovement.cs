@@ -18,17 +18,8 @@ public class CameraMovement : MonoBehaviour
         _prevCenterPosition = Vector3.zero;
         _positionToMove = _cameraTransform.position;
     }
-    private void OnEnable()
-    {
-        SphereData.OnPositionChanged += StartCameraMovement;       
-    }
 
-    private void OnDisable()
-    {
-        SphereData.OnPositionChanged -= StartCameraMovement;
-    }
-
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         if (_moveProgress !=-1)
         {
@@ -39,7 +30,7 @@ public class CameraMovement : MonoBehaviour
         }
 
     }
-    private void StartCameraMovement(Vector3 centerPosition)
+    public void StartCameraMovement(Vector3 centerPosition)
     {
         _moveProgress = 0;
         _startMovePosition = _cameraTransform.position;

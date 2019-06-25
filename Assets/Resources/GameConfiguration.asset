@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: debab49b7675a104db424be4b8cb9881, type: 3}
+  m_Name: GameConfiguration
+  m_EditorClassIdentifier: 
+  MainInstaller:
+    FieldPartPool:
+      Prefab: {fileID: 3346161885817790096, guid: ce040330bda507f448d13f216c23bf0e,
+        type: 3}
+      TransformGroup: Path
+      InitialSize: 20
+    CrystalPool:
+      Prefab: {fileID: 3966260613067843630, guid: fd0a5e3002978724eb9f7465a567d575,
+        type: 3}
+      TransformGroup: Crystal
+      InitialSize: 7
+  FieldGenerator:
+    StartPosition: {x: 0, y: -1, z: 1}
+    MinimumDistanceToGenerate: 10
+    MaxDistanceToDestroy: 1
+    StartField: {fileID: 0}
+  MoveSettings:
+    ForceScale: 20
