@@ -20,17 +20,11 @@ public class SphereView : MonoBehaviour {
 
 
     private void OnCollisionEnter(Collision collision) {
-        CheckFieldPartCollision(collision.collider);
-        CheckCrystalCollision(collision.collider);
+        CheckFieldPart(collision.collider);
     }
 
-    private void CheckCrystalCollision(Collider collisionCollider) {
-        var crystal = collisionCollider.GetComponent<Crystal>();
-        if (crystal == null) return;
-        crystal.Collect();
-    }
 
-    private void CheckFieldPartCollision(Collider collisionCollider) {
+    private void CheckFieldPart(Collider collisionCollider) {
         if (collisionCollider.GetComponent<FieldPart>() == null) return;
 
         var positionOnPlatform = collisionCollider.transform.position + _spherePosShift;
@@ -39,11 +33,22 @@ public class SphereView : MonoBehaviour {
     }
 
     private void OnTriggerEnter(Collider other) {
+        CheckKillZone(other);
+        CheckCrystal(other);
+    }
+
+    private void CheckKillZone(Collider other) {
         if (other.GetComponent<KillZoneMovement>() != null) {
             _stateManager.ChangeState(SphereState.Falling);
         }
     }
 
+    private void CheckCrystal(Collider collisionCollider) {
+        var crystal = collisionCollider.GetComponent<Crystal>();
+        if (crystal == null) return;
+        crystal.Collect();
+    }
+    
     public void MoveToLastStablePosition() {
         transform.position = _lastStablePosition;
     }

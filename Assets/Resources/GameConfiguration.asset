@@ -19,7 +19,7 @@ MonoBehaviour:
       TransformGroup: Path
       InitialSize: 20
     CrystalPool:
-      Prefab: {fileID: 3966260613067843630, guid: fd0a5e3002978724eb9f7465a567d575,
+      Prefab: {fileID: 3631540770964776288, guid: d6cfcad6c321d13498f084547a7b027d,
         type: 3}
       TransformGroup: Crystal
       InitialSize: 7

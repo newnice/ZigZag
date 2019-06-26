@@ -6,14 +6,14 @@ public class FieldGenerator {
     private Vector3 _lastComponentPosition;
     private readonly float _minGenDistance;
     private readonly float _maxDestroyDistance;
-    private readonly FieldPart.Pool _pool;
+    private readonly FieldPart.Pool _fieldPool;
     private Queue<FieldPart> _activeFieldParts;
 
-    public FieldGenerator(Settings settings, FieldPart.Pool pool) {
+    public FieldGenerator(Settings settings, FieldPart.Pool fieldPool) {
         _lastComponentPosition = settings.StartPosition;
         _minGenDistance = settings.MinimumDistanceToGenerate;
         _maxDestroyDistance = settings.MaxDistanceToDestroy;
-        _pool = pool;
+        _fieldPool = fieldPool;
 
         _activeFieldParts = new Queue<FieldPart>();
         //  _activeFieldParts.Enqueue(settings.StartField);
@@ -31,7 +31,7 @@ public class FieldGenerator {
             var part = _activeFieldParts.Peek();
             var posShift = position - part.transform.position;
             if (posShift.z > _maxDestroyDistance) {
-                _pool.Despawn(part);
+                _fieldPool.Despawn(part);
                 _activeFieldParts.Dequeue();
             }
             else {
@@ -50,7 +50,7 @@ public class FieldGenerator {
     }
 
     private bool GeneratePathComponent() {
-        var part = _pool.Spawn(_lastComponentPosition);
+        var part = _fieldPool.Spawn(_lastComponentPosition);
         _lastComponentPosition = part.Position;
         _activeFieldParts.Enqueue(part);
         return true;
