@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using DefaultNamespace;
+using Zenject;
 
 public class GameSignalsInstaller : Installer<GameSignalsInstaller>
 {
@@ -13,5 +14,7 @@ public class GameSignalsInstaller : Installer<GameSignalsInstaller>
             .ToMethod<CameraMovement>((x, s) => x.StartCameraMovement(s.Position)).FromResolve();
         Container.BindSignal<PositionChangedSignal>()
             .ToMethod<FieldGenerator>((x, s) => x.OnVisibleFieldChanged(s.Position)).FromResolve();
+        Container.BindSignal<PositionChangedSignal>()
+            .ToMethod<ScoreManager>((x, s) => x.UpdateByPath()).FromResolve();
     }
 }

@@ -1,28 +1,37 @@
-﻿using Common;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
-public class Crystal : MonoBehaviour {
-    private Animator Animator { get; set; }
+public class Crystal : MonoBehaviour
+{
+    private ParticleSystem DestructionEffect { get; set; }
+    private GameObject RootObject { get; set; }
 
-    public void Collect() {
-        Animator.SetBool(Constants.ANIMATION_IS_DEAD, true);
+    public void Collect()
+    {
+        RootObject.SetActive(false);
+        DestructionEffect.Play();
     }
 
-    public class Pool : MonoMemoryPool<Transform, Vector3, Crystal> {
+    public class Pool : MonoMemoryPool<Transform, Vector3, Crystal>
+    {
         private Vector3 _relativePos = Vector3.zero;
-        protected override void OnCreated(Crystal item) {
+
+        protected override void OnCreated(Crystal item)
+        {
             base.OnCreated(item);
-            item.Animator = item.GetComponentInChildren<Animator>();
+            item.DestructionEffect = item.GetComponentInChildren<ParticleSystem>();
             var collider = item.GetComponentInChildren<CapsuleCollider>();
-            _relativePos = new Vector3(0, collider.height*collider.transform.localScale.y, 0);
+            item.RootObject = collider.gameObject;
+            _relativePos = new Vector3(0, collider.height * collider.transform.localScale.y, 0);
         }
 
-        protected override void Reinitialize(Transform parent, Vector3 localPos, Crystal item) {
-            item.Animator.SetBool(Constants.ANIMATION_IS_DEAD, false);
-           
-            item.transform.parent = parent;
-            item.transform.localPosition = localPos + _relativePos;
-        }      
+        protected override void Reinitialize(Transform parent, Vector3 localPos, Crystal item)
+        {
+            var t = item.transform;
+            t.parent = parent;
+            t.localPosition = localPos + _relativePos;
+
+            item.RootObject.SetActive(true);
+        }
     }
 }

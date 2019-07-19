@@ -1,4 +1,6 @@
 using System;
+using DefaultNamespace;
+using DefaultNamespace.Sphere;
 using UnityEngine;
 using Zenject;
 
@@ -10,9 +12,12 @@ public class ZigZagInstaller : MonoInstaller
     {
         InitAndBindPool<FieldPart, FieldPart.Pool>(_settings.FieldPartPool);
         InitAndBindPool<Crystal, Crystal.Pool>(_settings.CrystalPool);
-
-        Container.Bind<FieldGenerator>().AsSingle();
         
+        Container.Bind<FieldPart>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<FieldGenerator>().AsSingle();
+        Container.Bind<ScoreManager>().AsSingle();
+        Container.Bind<GameDifficulty>().AsSingle();
+
         Container.Bind<CameraMovement>().FromComponentInHierarchy().AsSingle();
         Container.Bind<KillZoneMovement>().FromComponentInHierarchy().AsSingle();
         GameSignalsInstaller.Install(Container);

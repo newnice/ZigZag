@@ -1,4 +1,5 @@
 ﻿using System;
+using DefaultNamespace.Sphere;
 using UnityEngine;
 
 public class MoveState : IState
@@ -7,11 +8,11 @@ public class MoveState : IState
 
     private readonly Rigidbody _rigidBody;
     private readonly float _forceScale;
-    private readonly StateManager _stateManager;
+    private readonly GameDifficulty _difficulty;
 
-    public MoveState(StateManager sm, Rigidbody sphereRb, Settings settings)
+    public MoveState(GameDifficulty dif, Rigidbody sphereRb, Settings settings)
     {
-        _stateManager = sm;
+        _difficulty = dif;
         _rigidBody = sphereRb;
         _forceScale = settings.ForceScale;
     }
@@ -23,7 +24,7 @@ public class MoveState : IState
 
     public void FixedUpdate()
     {
-        _rigidBody.AddForce(_direction * _forceScale);
+        _rigidBody.AddForce(_difficulty.Difficulty * _forceScale * _direction);
     }
 
     public void Update()
@@ -42,13 +43,13 @@ public class MoveState : IState
         else
             _direction = Vector3.right;
     }
-    
+
     private void StopMovement()
     {
         _rigidBody.velocity = Vector3.zero;
         _rigidBody.angularVelocity = Vector3.zero;
     }
-    
+
     [Serializable]
     public class Settings
     {

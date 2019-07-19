@@ -19,14 +19,13 @@ MonoBehaviour:
       TransformGroup: Path
       InitialSize: 20
     CrystalPool:
-      Prefab: {fileID: 3631540770964776288, guid: d6cfcad6c321d13498f084547a7b027d,
+      Prefab: {fileID: 7637118219838761418, guid: d6cfcad6c321d13498f084547a7b027d,
         type: 3}
-      TransformGroup: Crystal
+      TransformGroup: Crystals
       InitialSize: 7
   FieldGenerator:
     StartPosition: {x: 0, y: -1, z: 1}
     MinimumDistanceToGenerate: 10
-    MaxDistanceToDestroy: 1
-    StartField: {fileID: 0}
+    MaxDistanceToDestroy: 3
   MoveSettings:
     ForceScale: 20

@@ -44,7 +44,7 @@ public class SphereView : MonoBehaviour {
     }
 
     private void CheckCrystal(Collider collisionCollider) {
-        var crystal = collisionCollider.GetComponent<Crystal>();
+        var crystal = collisionCollider.GetComponentInParent<Crystal>();
         if (crystal == null) return;
         crystal.Collect();
     }

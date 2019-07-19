@@ -1,16 +1,22 @@
-﻿public class FallingState : IState {
+﻿using DefaultNamespace;
+
+public class FallingState : IState
+{
     private StateManager _stateManager;
-    
-    public FallingState( StateManager sm) {
+    private ScoreManager _scoreManager;
+
+    public FallingState(StateManager sm, ScoreManager scoreManager)
+    {
         _stateManager = sm;
     }
-    public void EnterState() {
-      
+
+    public void EnterState()
+    {
+        _scoreManager.UpdateByFallenPenalty();
     }
-    
+
     public void FixedUpdate()
     {
-        
     }
 
     public void Update()

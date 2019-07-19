@@ -2,54 +2,64 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FieldGenerator {
+public class FieldGenerator
+{
     private Vector3 _lastComponentPosition;
     private readonly float _minGenDistance;
     private readonly float _maxDestroyDistance;
     private readonly FieldPart.Pool _fieldPool;
-    private Queue<FieldPart> _activeFieldParts;
+    private readonly Queue<FieldPart> _activeFieldParts;
+    private const int StartPartCount = 10;
 
-    public FieldGenerator(Settings settings, FieldPart.Pool fieldPool) {
+    public FieldGenerator(Settings settings, FieldPart.Pool fieldPool, FieldPart startPlatform)
+    {
         _lastComponentPosition = settings.StartPosition;
         _minGenDistance = settings.MinimumDistanceToGenerate;
         _maxDestroyDistance = settings.MaxDistanceToDestroy;
         _fieldPool = fieldPool;
 
         _activeFieldParts = new Queue<FieldPart>();
-        //  _activeFieldParts.Enqueue(settings.StartField);
-        var counter = 10;
-        while (TryGenerateNextComponent(Vector3.zero) && counter-- > 0) { }
+        _activeFieldParts.Enqueue(startPlatform);
+        var counter = StartPartCount;
+        while (TryGenerateNextComponent(Vector3.zero) && counter-- > 0)
+        {
+        }
     }
 
-    public void OnVisibleFieldChanged(Vector3 position) {
+    public void OnVisibleFieldChanged(Vector3 position)
+    {
         TryGenerateNextComponent(position);
         TryDestroyUnusedComponents(position);
     }
 
-    private void TryDestroyUnusedComponents(Vector3 position) {
-        while (_activeFieldParts.Count > 0) {
+    private void TryDestroyUnusedComponents(Vector3 position)
+    {
+        while (_activeFieldParts.Count > 0)
+        {
             var part = _activeFieldParts.Peek();
             var posShift = position - part.transform.position;
-            if (posShift.z > _maxDestroyDistance) {
-                _fieldPool.Despawn(part);
-                _activeFieldParts.Dequeue();
-            }
-            else {
+            if (posShift.x+posShift.z < _maxDestroyDistance)
+            {
                 break;
             }
+            _fieldPool.Despawn(part);
+            _activeFieldParts.Dequeue();
         }
     }
 
 
-    private bool TryGenerateNextComponent(Vector3 gamePosition) {
-        if ((_lastComponentPosition - gamePosition).magnitude < _minGenDistance) {
+    private bool TryGenerateNextComponent(Vector3 gamePosition)
+    {
+        if ((_lastComponentPosition - gamePosition).magnitude < _minGenDistance)
+        {
             return GeneratePathComponent();
         }
 
         return false;
     }
 
-    private bool GeneratePathComponent() {
+    private bool GeneratePathComponent()
+    {
         var part = _fieldPool.Spawn(_lastComponentPosition);
         _lastComponentPosition = part.Position;
         _activeFieldParts.Enqueue(part);
@@ -57,10 +67,10 @@ public class FieldGenerator {
     }
 
     [Serializable]
-    public class Settings {
+    public class Settings
+    {
         public Vector3 StartPosition = new Vector3(0, -1, 1);
         public float MinimumDistanceToGenerate = 2;
         public float MaxDistanceToDestroy = 1;
-        public FieldPart StartField;
     }
 }
