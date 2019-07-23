@@ -5,7 +5,7 @@ namespace DefaultNamespace
 {
     public class ScoreManager
     {
-        private int CurrentScore { get; set; }
+        public int CurrentScore { get; private set; }
         private GameDifficulty _difficulty;
         private Settings _scoreSettings;
 

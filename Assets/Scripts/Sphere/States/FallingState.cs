@@ -8,6 +8,7 @@ public class FallingState : IState
     public FallingState(StateManager sm, ScoreManager scoreManager)
     {
         _stateManager = sm;
+        _scoreManager = scoreManager;
     }
 
     public void EnterState()

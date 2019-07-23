@@ -1,16 +1,19 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace;
+using UnityEngine;
 using Zenject;
 
 public class SphereView : MonoBehaviour {
     private StateManager _stateManager;
+    private ScoreManager _scoreManager;
     private SignalBus _signalBus;
     private Vector3 _spherePosShift;
     private Vector3 _lastStablePosition = Vector3.zero;
 
     [Inject]
-    public void Construct(SignalBus signalBus, StateManager stateManager) {
+    public void Construct(SignalBus signalBus, StateManager stateManager, ScoreManager scoreManager) {
         _signalBus = signalBus;
         _stateManager = stateManager;
+        _scoreManager = scoreManager;
     }
 
     void Start() {
@@ -47,6 +50,7 @@ public class SphereView : MonoBehaviour {
         var crystal = collisionCollider.GetComponentInParent<Crystal>();
         if (crystal == null) return;
         crystal.Collect();
+        _scoreManager.UpdateByCrystalCollect();
     }
     
     public void MoveToLastStablePosition() {
