@@ -29,3 +29,8 @@ MonoBehaviour:
     MaxDistanceToDestroy: 3
   MoveSettings:
     ForceScale: 20
+  ScoreSettings:
+    CrystalCollectCost: 5
+    PathUnitCost: 1
+    PathSpeedKoefficient: 1
+    FallenPenalty: -50

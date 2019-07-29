@@ -1,39 +1,51 @@
 using System;
 using DefaultNamespace.Sphere;
+using Zenject;
 
 namespace DefaultNamespace
 {
     public class ScoreManager
     {
-        public int CurrentScore { get; private set; }
+        private int _pathCost, _crystalCount, _fallenCount;
+
+        private int TotalScore => _pathCost -_fallenCount * _scoreSettings.FallenPenalty +
+                                  _scoreSettings.CrystalCollectCost * _crystalCount;
+
         private GameDifficulty _difficulty;
         private Settings _scoreSettings;
+        private IScoreView _view;
 
-        public ScoreManager(GameDifficulty gameDifficulty, Settings settings)
+        [Inject]
+        public void Construct(GameDifficulty gameDifficulty, Settings settings, IScoreView view)
         {
             _difficulty = gameDifficulty;
             _scoreSettings = settings;
+            _view = view;
         }
 
         public void UpdateByPath()
         {
-            CurrentScore += (int) (_scoreSettings.PathUnitCost * _scoreSettings.PathSpeedKoefficient *
-                                   _difficulty.Difficulty);
+            _pathCost += (int) (_difficulty.Difficulty * _scoreSettings.PathSpeedKoefficient *
+                                _scoreSettings.PathUnitCost);
+            _view.Path = _pathCost;
         }
 
         public void UpdateByCrystalCollect()
         {
-            CurrentScore += _scoreSettings.CrystalCollectCost;
+            _crystalCount++;
+            _view.CrystalCount = _crystalCount;
         }
 
         public void UpdateByFallenPenalty()
         {
-            CurrentScore += _scoreSettings.FallenPenalty;
+            _fallenCount++;
         }
 
         public void Reset()
         {
-            CurrentScore = 0;
+            _pathCost = 0;
+            _crystalCount = 0;
+            _fallenCount = 0;
         }
 
         [Serializable]
